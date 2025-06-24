@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reverse Frequency Cipher</title>
+    <style>
+        body {
+            background: #E8F0F2;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            padding: 40px;
+        }
+        textarea, input, button {
+            margin: 10px;
+            font-family: 'Courier New', monospace;
+        }
+        textarea {
+            width: 90%;
+            height: 100px;
+        }
+        .result {
+            margin-top: 20px;
+            white-space: pre-wrap;
+            background: white;
+            padding: 15px;
+            border: 1px solid #ccc;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        button[name="action"][value="encrypt"] {
+            background-color: #4CAF50; /* Green */
+        }
+
+        button[name="action"][value="decrypt"] {
+            background-color: #2196F3; /* Blue */
+        }
+
+        button[onclick="resetForm()"] {
+            background-color: #f44336; /* Red */
+        }
+
+        button[onclick="saveResult()"] {
+            background-color: #9C27B0; /* Purple */
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔐 Reverse Frequency Cipher 🔐</h1>
+    <form method="post" id="cipherForm">
+        <label for="text">Enter Message:</label><br>
+        <textarea name="text" id="text">{{ request.form.text or '' }}</textarea><br>
+
+        <button type="submit" name="action" value="encrypt">Encrypt</button>
+        <button type="submit" name="action" value="decrypt">Decrypt</button>
+        <button type="button" onclick="resetForm()">Reset</button>
+        <button type="button" onclick="saveResult()">Save Result</button>
+    </form>
+
+    {% if result %}
+    <div class="result">
+        <strong>Result:</strong><br>
+        {{ result }}
+    </div>
+    {% endif %}
+    <script>
+        function resetForm() {
+            document.getElementById("text").value = '';
+            const resultDiv = document.querySelector(".result");
+            if (resultDiv) {
+                resultDiv.innerHTML = '';
+            }
+        }
+
+        function saveResult() {
+            const result = document.querySelector(".result");
+            if (result && result.innerText.trim()) {
+                const blob = new Blob([result.innerText.trim()], { type: "text/plain;charset=utf-8" });
+                const link = document.createElement("a");
+                link.download = "cipher_result.txt";
+                link.href = URL.createObjectURL(blob);
+                link.click();
+            } else {
+                alert("Nothing to save!");
+            }
+        }
+</script>
+</body>
+</html>
