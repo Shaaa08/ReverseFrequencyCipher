@@ -28,6 +28,20 @@
             margin-left: auto;
             margin-right: auto;
         }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%;
+            background-color: #fff;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        th {
+            background-color: #2196F3;
+            color: white;
+        }
         button {
             padding: 10px 20px;
             margin: 5px;
@@ -38,25 +52,17 @@
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
         }
-
         button[name="action"][value="encrypt"] {
-            background-color: #4CAF50; /* Green */
+            background-color: #4CAF50;
         }
-
         button[name="action"][value="decrypt"] {
-            background-color: #2196F3; /* Blue */
+            background-color: #2196F3;
         }
-
         button[onclick="resetForm()"] {
-            background-color: #f44336; /* Red */
+            background-color: #f44336;
         }
-
         button[onclick="saveResult()"] {
-            background-color: #9C27B0; /* Purple */
-        }
-
-        button:hover {
-            opacity: 0.9;
+            background-color: #9C27B0;
         }
     </style>
 </head>
@@ -78,6 +84,32 @@
         {{ result }}
     </div>
     {% endif %}
+
+    {% if history %}
+    <h2>History</h2>
+    <table>
+        <tr>
+            <th>Action</th>
+            <th>Input</th>
+            <th>Output</th>
+        </tr>
+        {% for entry in history %}
+        <tr>
+            <td>{{ entry.action }}</td>
+            <td>{{ entry.input }}</td>
+            <td>{{ entry.output }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <form action="/save-history" method="get" style="margin-top: 10px; display: inline-block;">
+        <button type="submit" style="background-color:#607D8B;">💾 Save History to File</button>
+    </form>
+
+    <form action="/clear-history" method="get" style="margin-top: 10px; display: inline-block;">
+        <button type="submit" style="background-color:#c2bf07;">🗑️ Clear History</button>
+    </form>
+    {% endif %}
+
     <script>
         function resetForm() {
             document.getElementById("text").value = '';
@@ -99,6 +131,6 @@
                 alert("Nothing to save!");
             }
         }
-</script>
+    </script>
 </body>
 </html>
