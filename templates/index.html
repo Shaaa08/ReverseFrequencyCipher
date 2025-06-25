@@ -52,7 +52,7 @@
             cursor: pointer;
             font-family: 'Poppins', sans-serif;
         }
-        button[name="action"][value="encrypt"] {
+        button[onclick="submitWithRounds()"] {
             background-color: #4CAF50;
         }
         button[name="action"][value="decrypt"] {
@@ -72,7 +72,7 @@
         <label for="text">Enter Message:</label><br>
         <textarea name="text" id="text">{{ request.form.text or '' }}</textarea><br>
 
-        <button type="submit" name="action" value="encrypt">Encrypt</button>
+        <button type="button" onclick="submitWithRounds()">Encrypt</button>
         <button type="submit" name="action" value="decrypt">Decrypt</button>
         <button type="button" onclick="resetForm()">Reset</button>
         <button type="button" onclick="saveResult()">Save Result</button>
@@ -129,6 +129,28 @@
                 link.click();
             } else {
                 alert("Nothing to save!");
+            }
+        }
+
+        function submitWithRounds() {
+            let rounds = prompt("Enter number of transposition rounds (e.g., 1-5):", "1");
+            if (rounds !== null && !isNaN(rounds) && parseInt(rounds) > 0) {
+                let form = document.getElementById("cipherForm");
+                let input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "rounds";
+                input.value = parseInt(rounds);
+                form.appendChild(input);
+
+                let encryptButton = document.createElement("input");
+                encryptButton.type = "hidden";
+                encryptButton.name = "action";
+                encryptButton.value = "encrypt";
+                form.appendChild(encryptButton);
+
+                form.submit();
+            } else {
+                alert("Invalid round count. Please enter a positive number.");
             }
         }
     </script>

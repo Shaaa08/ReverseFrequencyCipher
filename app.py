@@ -38,7 +38,10 @@ def index():
         
         if action == "encrypt":
             encrypted = encrypt_rfc(text)
-            result = apply_transposition(encrypted)
+            rounds = int(request.form.get("rounds", 1))
+            for _ in range(rounds):
+                encrypted = apply_transposition(encrypted)
+            result = encrypted
             session["history"].append({
                 "action": "Encrypt",
                 "input": text,
